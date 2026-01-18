@@ -3,7 +3,7 @@ import { View, FlatList, ActivityIndicator, Text, RefreshControl } from 'react-n
 import { Product } from '../types/Product';
 import { getProducts } from '../services/api';
 import ProductItem from '../components/ProductItem';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets, SafeAreaView } from 'react-native-safe-area-context';
 
 /**
   ProductListScreen
@@ -73,7 +73,7 @@ export default function ProductListScreen() {
 
     // Success State
     return (
-        <View className="flex-1 bg-gray-50" style={{ paddingBottom: insets.bottom }}>
+        <SafeAreaView className="flex-1 bg-gray-50" edges={['left', 'right']}>
             <FlatList
                 data={products}
                 renderItem={({ item }) => <ProductItem product={item} />}
@@ -88,6 +88,6 @@ export default function ProductListScreen() {
                 }
                 showsVerticalScrollIndicator={false}
             />
-        </View>
+        </SafeAreaView>
     );
 }

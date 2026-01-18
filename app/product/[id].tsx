@@ -13,7 +13,7 @@ import { Product } from '../../types/Product';
 import { getProductById } from '../../services/api';
 import { useCart } from '../../context/CartContext';
 import { Ionicons } from '@expo/vector-icons';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 /**
 ProductDetailScreen
@@ -26,7 +26,7 @@ export default function ProductDetailScreen() {
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
     const { addToCart } = useCart();
-    const insets = useSafeAreaInsets();
+
 
     // Fetch product details on mount or when ID changes
     useEffect(() => {
@@ -89,56 +89,55 @@ export default function ProductDetailScreen() {
                 }}
             />
 
-            <ScrollView className="flex-1 bg-white" showsVerticalScrollIndicator={false}>
-                <Image
-                    source={{ uri: product.image }}
-                    className="w-full h-80 object-contain bg-white mt-24"
-                    resizeMode="contain"
-                />
-                <View className="p-6">
-                    {/* Header Section */}
-                    <View className="flex-row justify-between items-start mb-4">
-                        <Text className="flex-1 text-2xl font-bold text-gray-900 mr-4">
-                            {product.title}
+            <SafeAreaView className="flex-1 bg-white" edges={['bottom', 'left', 'right']}>
+                <ScrollView className="flex-1 bg-white" showsVerticalScrollIndicator={false}>
+                    <Image
+                        source={{ uri: product.image }}
+                        className="w-full h-80 object-contain bg-white mt-16"
+                        resizeMode="contain"
+                    />
+                    <View className="p-6">
+                        {/* Header Section */}
+                        <View className="flex-row justify-between items-start mb-4">
+                            <Text className="flex-1 text-2xl font-bold text-gray-900 mr-4">
+                                {product.title}
+                            </Text>
+                            <Text className="text-2xl font-bold text-blue-600">
+                                ${product.price.toFixed(2)}
+                            </Text>
+                        </View>
+
+                        {/* Category Badge */}
+                        <Text className="text-sm font-medium text-gray-500 bg-gray-100 self-start px-3 py-1 rounded-full mb-4 capitalize">
+                            {product.category}
                         </Text>
-                        <Text className="text-2xl font-bold text-blue-600">
-                            ${product.price.toFixed(2)}
+
+                        {/* Rating Section */}
+                        <View className="flex-row items-center mb-6">
+                            <Ionicons name="star" size={20} color="#FBBF24" />
+                            <Text className="ml-1 text-gray-700 font-medium">
+                                {product.rating.rate} ({product.rating.count} reviews)
+                            </Text>
+                        </View>
+
+                        {/* Description */}
+                        <Text className="text-gray-600 text-base leading-7 mb-8">
+                            {product.description}
                         </Text>
                     </View>
+                </ScrollView>
 
-                    {/* Category Badge */}
-                    <Text className="text-sm font-medium text-gray-500 bg-gray-100 self-start px-3 py-1 rounded-full mb-4 capitalize">
-                        {product.category}
-                    </Text>
-
-                    {/* Rating Section */}
-                    <View className="flex-row items-center mb-6">
-                        <Ionicons name="star" size={20} color="#FBBF24" />
-                        <Text className="ml-1 text-gray-700 font-medium">
-                            {product.rating.rate} ({product.rating.count} reviews)
-                        </Text>
-                    </View>
-
-                    {/* Description */}
-                    <Text className="text-gray-600 text-base leading-7 mb-8">
-                        {product.description}
-                    </Text>
+                {/* Sticky "Add to Cart" Footer */}
+                <View className="p-4 bg-white border-t border-gray-100 shadow-lg">
+                    <TouchableOpacity
+                        onPress={handleAddToCart}
+                        className="bg-blue-600 py-4 rounded-xl flex-row justify-center items-center"
+                    >
+                        <Ionicons name="cart" size={24} color="#fff" />
+                        <Text className="text-white font-bold text-lg ml-2">Add to Cart</Text>
+                    </TouchableOpacity>
                 </View>
-            </ScrollView>
-
-            {/* Sticky "Add to Cart" Footer */}
-            <View
-                className="p-4 bg-white border-t border-gray-100 shadow-lg"
-                style={{ paddingBottom: Math.max(insets.bottom, 16) }}
-            >
-                <TouchableOpacity
-                    onPress={handleAddToCart}
-                    className="bg-blue-600 py-4 rounded-xl flex-row justify-center items-center"
-                >
-                    <Ionicons name="cart" size={24} color="#fff" />
-                    <Text className="text-white font-bold text-lg ml-2">Add to Cart</Text>
-                </TouchableOpacity>
-            </View>
+            </SafeAreaView>
         </>
     );
 }

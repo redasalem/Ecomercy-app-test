@@ -3,7 +3,7 @@ import { View, Text, FlatList, TouchableOpacity, Alert } from 'react-native';
 import { useCart } from '../context/CartContext';
 import CartItem from '../components/CartItem';
 import { Ionicons } from '@expo/vector-icons';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets, SafeAreaView } from 'react-native-safe-area-context';
 import { Link, useRouter } from 'expo-router';
 
 /**
@@ -67,7 +67,7 @@ export default function CartScreen() {
     }
 
     return (
-        <View className="flex-1 bg-gray-50" style={{ paddingBottom: insets.bottom }}>
+        <SafeAreaView className="flex-1 bg-gray-50" edges={['bottom', 'left', 'right']}>
             <FlatList
                 data={cartItems}
                 renderItem={({ item }) => (
@@ -84,10 +84,7 @@ export default function CartScreen() {
             />
 
             {/* Sticky Checkout Footer */}
-            <View
-                className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 p-4 shadow-lg"
-                style={{ paddingBottom: Math.max(insets.bottom, 16) }}
-            >
+            <View className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 p-4 shadow-lg">
                 <View className="flex-row justify-between items-center mb-4">
                     <Text className="text-gray-500 text-lg">Total:</Text>
                     <Text className="text-2xl font-bold text-gray-900">
@@ -101,6 +98,6 @@ export default function CartScreen() {
                     <Text className="text-white font-bold text-lg">Checkout</Text>
                 </TouchableOpacity>
             </View>
-        </View>
+        </SafeAreaView>
     );
 }
